@@ -28,7 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   DbHelper? mainDb = DbHelper.getInstances;
   void nextPage()async{
-    uid =await mainDb!.getUID();
+    prefs =await  SharedPreferences.getInstance();
+    uid = prefs!.getInt('uid');
+    // uid = await mainDb!.getUID();
     if(uid == null || uid == 0){
       page = LoginPage();
     }

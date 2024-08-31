@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -133,11 +131,9 @@ class DbHelper {
 
   Future<bool> signUp(UserModel newUser) async {
     var db = await getDb();
-    bool check = await checkIfUserExist(newUser.email, newUser.pass);
+    bool check = await checkIfUserExist(newUser.email);
     bool rowsEffected = false;
     if(!check){
-      print(newUser.uid);
-      print(newUser.phone);
       int count = await db.insert(table_User, newUser.toMap());
       rowsEffected = count>0;
     }
@@ -145,7 +141,7 @@ class DbHelper {
   }
 
   //check is user exist if yes return true else return false
-  Future<bool> checkIfUserExist(String email, String pass) async {
+  Future<bool> checkIfUserExist(String email) async {
     var db = await getDb();
     var data = await db.query(table_User,
         where: '$User_Email = ?', whereArgs: [email]);

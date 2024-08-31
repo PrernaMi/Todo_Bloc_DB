@@ -128,7 +128,6 @@ class _SignUpPageState extends State<SignUpPage> {
               onTap: () async{
                 var db = DbHelper.getInstances;
                 bool check = await db.signUp(UserModel(
-
                     fname: fNameController.text.toString(),
                     lname: lNameController.text.toString(),
                     email: emailController.text.toString(),
