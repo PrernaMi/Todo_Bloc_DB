@@ -55,11 +55,13 @@ class AddUpdate extends StatelessWidget {
                 flag == true
                     ? context.read<TodoBloc>().add(AddTaskBloc(
                         newModel: ListModel(
+                          uid: 0,
                             title: titleController.text.toString(),
                             desc: descController.text.toString(),
                             isComp: 0)))
                     : context.read<TodoBloc>().add(UpdateTaskBloc(
                         newModel: ListModel(
+                          uid: 0,
                             title: titleController.text.toString(),
                             desc: descController.text.toString()),
                         s_no: s_no!));

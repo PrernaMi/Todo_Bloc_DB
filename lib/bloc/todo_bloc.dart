@@ -65,5 +65,6 @@ class TodoBloc extends Bloc<TodoEvents, TodoStates> {
       var data = await mainDb!.getFromDb();
       emit(LoadedState(allTask: data));
     });
+
   }
 }

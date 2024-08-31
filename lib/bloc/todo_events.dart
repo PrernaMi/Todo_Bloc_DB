@@ -28,3 +28,17 @@ class AddIsCompBloc extends TodoEvents{
 
 class GetIsCompBloc extends TodoEvents{}
 
+class SignUpBloc extends TodoEvents{
+  String fname;
+  String lname;
+  String email;
+  String phone;
+  String pass;
+  SignUpBloc({
+    required this.fname,
+    required this.lname,
+    required this.email,
+    required this.phone,
+    required this.pass
+  });
+}
