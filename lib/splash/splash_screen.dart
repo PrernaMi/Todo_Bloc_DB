@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_bloc_db/database/local/db_helper.dart';
+import 'package:todo_bloc_db/provider/theme_provider.dart';
 
 import '../screens/home_screen.dart';
 import 'login_page.dart';
@@ -21,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     nextPage();
+    context.read<ThemeProvider>().getDefaultTheme();
     super.initState();
   }
 
