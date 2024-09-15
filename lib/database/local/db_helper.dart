@@ -12,7 +12,8 @@ class DbHelper {
 
   static final getInstances = DbHelper._();
 
-  SharedPreferences? prefs ;
+  SharedPreferences? prefs;
+
   //tables
   static String table_Note = 'note';
   static String table_User = 'user';
@@ -67,9 +68,7 @@ class DbHelper {
     var db = await getDb();
     int uid = await getUID();
     newModel.uid = uid;
-    int count = await db.insert(
-        table_Note,
-        newModel.toMap());
+    int count = await db.insert(table_Note, newModel.toMap());
     return count > 0;
   }
 
@@ -90,14 +89,17 @@ class DbHelper {
   Future<bool> deleteInDb({required int s_no}) async {
     var db = await getDb();
     int count = await db
-        .delete(table_Note, where: '$table_Col_S_no = ?', whereArgs: [s_no]);
+        .delete(table_Note, where: '$table_Col_S_no = ?',
+        whereArgs: [s_no]);
     return count > 0;
   }
 
   Future<List<ListModel>> getFromDb() async {
     var db = await getDb();
     int uid = await getUID();
-    var data = await db.query(table_Note,where: '$User_Id = ?',whereArgs: ['$uid']);
+    var data =
+        await db.query(table_Note, where: '$User_Id = ?',
+            whereArgs: ['$uid']);
     List<ListModel> list = [];
     for (Map<String, dynamic> eachMap in data) {
       list.add(ListModel.fromMap(map: eachMap));
@@ -105,7 +107,8 @@ class DbHelper {
     return list;
   }
 
-  Future<bool> updateIsComInDb({required int isComp, required int s_no}) async {
+  Future<bool> updateIsComInDb({required int isComp, required int s_no})
+  async {
     var db = await getDb();
     int uid = await getUID();
     int count = await db.update(
@@ -114,28 +117,30 @@ class DbHelper {
           table_Col_IsComp: isComp,
         },
         where: '$table_Col_S_no = ? and $User_Id = ?',
-        whereArgs: [s_no,uid]);
+        whereArgs: [s_no, uid]);
     return count > 0;
   }
 
   Future<double> getIsCompDb() async {
     var db = await getDb();
     var c = await db.rawQuery(
-        'select count($table_Col_IsComp) as count from $table_Note where $table_Col_IsComp = ?',
+        '''select count($table_Col_IsComp) as count from 
+        $table_Note where $table_Col_IsComp = ?''',
         [1]);
     int count = Sqflite.firstIntValue(c) ?? 0;
     return count.toDouble();
   }
 
-  //signUp to new User but first we will check if is not already registered
+  //signUp to new User but first we will check if is not already
+  // registered
 
   Future<bool> signUp(UserModel newUser) async {
     var db = await getDb();
     bool check = await checkIfUserExist(newUser.email);
     bool rowsEffected = false;
-    if(!check){
+    if (!check) {
       int count = await db.insert(table_User, newUser.toMap());
-      rowsEffected = count>0;
+      rowsEffected = count > 0;
     }
     return rowsEffected;
   }
@@ -143,30 +148,31 @@ class DbHelper {
   //check is user exist if yes return true else return false
   Future<bool> checkIfUserExist(String email) async {
     var db = await getDb();
-    var data = await db.query(table_User,
-        where: '$User_Email = ?', whereArgs: [email]);
+    var data = await db
+        .query(table_User, where: '$User_Email = ?', whereArgs: [email]);
     return data.isNotEmpty;
   }
 
   //login--> check authenticate user
-   Future<bool> checkAuthenticate(String email,String pass)async{
+  Future<bool> checkAuthenticate(String email, String pass) async {
     var db = await getDb();
     var data = await db.query(table_User,
-        where: '$User_Email = ? and $User_Pass = ?', whereArgs: [email,pass]);
-    if(data.isNotEmpty){
+        where: '$User_Email = ? and $User_Pass = ?',
+        whereArgs: [email, pass]);
+    if (data.isNotEmpty) {
       setUId(data);
     }
     return data.isNotEmpty;
-   }
+  }
 
-   void setUId(var data)async{
-     prefs =await SharedPreferences.getInstance();
-     prefs!.setInt("uid", UserModel.fromMap(data[0]).uid!);
-   }
+  void setUId(var data) async {
+    prefs = await SharedPreferences.getInstance();
+    prefs!.setInt("uid", UserModel.fromMap(data[0]).uid!);
+  }
 
-   Future<int> getUID()async{
-     prefs =await SharedPreferences.getInstance();
-     int id =  prefs!.getInt('uid')!;
-     return id;
-   }
+  Future<int> getUID() async {
+    prefs = await SharedPreferences.getInstance();
+    int id = prefs!.getInt('uid')!;
+    return id;
+  }
 }

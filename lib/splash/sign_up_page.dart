@@ -138,7 +138,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       SnackBar(content: Text("User Alread Exist"),
                         action: SnackBarAction(
                           onPressed: (){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context){
                               return LoginPage();
                             }));
                           },
