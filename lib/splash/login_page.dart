@@ -75,7 +75,10 @@ class _LoginPageState extends State<LoginPage> {
             InkWell(
               onTap: () async {
                 var db = DbHelper.getInstances;
-                bool check =await db.checkAuthenticate(emailController.text.toString(), passwordController.text.toString());
+
+                bool check =await db.checkAuthenticate(
+                    emailController.text.toString(),
+                    passwordController.text.toString());
                 !check
                     ? ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Invalid credentials"),))

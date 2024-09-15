@@ -18,13 +18,16 @@ class AddUpdate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = Theme.of(context).brightness == Brightness.light;
     if (flag == false) {
       titleController.text = prevTitle!;
       descController.text = prevDesc!;
     }
     return Scaffold(
       appBar: AppBar(
-        title: flag == true ? Center(child: Text("Add Your Note")) : Center(child: Text("Update your Note")),
+        title: flag == true
+            ? Center(child: Text("Add Your Note"))
+            : Center(child: Text("Update your Note")),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -35,9 +38,11 @@ class AddUpdate extends StatelessWidget {
             child: TextField(
               controller: titleController,
               decoration: InputDecoration(
+                  hintText: "Enter your task",
+                  label: Text("Title"),
                   border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              )),
+                    borderRadius: BorderRadius.circular(12),
+                  )),
             ),
           ),
           Padding(
@@ -45,9 +50,11 @@ class AddUpdate extends StatelessWidget {
             child: TextField(
               controller: descController,
               decoration: InputDecoration(
+                  hintText: "Enter your Description",
+                  label: Text("Description"),
                   border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              )),
+                    borderRadius: BorderRadius.circular(12),
+                  )),
             ),
           ),
           ElevatedButton(
@@ -55,19 +62,28 @@ class AddUpdate extends StatelessWidget {
                 flag == true
                     ? context.read<TodoBloc>().add(AddTaskBloc(
                         newModel: ListModel(
-                          uid: 0,
+                            uid: 0,
                             title: titleController.text.toString(),
                             desc: descController.text.toString(),
                             isComp: 0)))
                     : context.read<TodoBloc>().add(UpdateTaskBloc(
                         newModel: ListModel(
-                          uid: 0,
+                            uid: 0,
                             title: titleController.text.toString(),
                             desc: descController.text.toString()),
                         s_no: s_no!));
                 Navigator.pop(context);
               },
-              child: flag == true ? Text("Add") : Text("Update"))
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+              child: flag == true
+                  ? Text(
+                      "Add",
+                      style: TextStyle(
+                          color: isLight ? Colors.purple : Colors.white),
+                    )
+                  : Text("Update",
+                      style: TextStyle(
+                          color: isLight ? Colors.purple : Colors.white)))
         ],
       ),
     );

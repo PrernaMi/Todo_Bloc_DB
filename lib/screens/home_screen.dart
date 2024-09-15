@@ -3,17 +3,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_bloc_db/bloc/todo_bloc.dart';
 import 'package:todo_bloc_db/bloc/todo_events.dart';
 import 'package:todo_bloc_db/bloc/todo_states.dart';
+import 'package:todo_bloc_db/provider/theme_provider.dart';
 
 import 'add_update_task.dart';
 
 class HomeScreenDb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool isLight = Theme.of(context).brightness == Brightness.light;
     context.read<TodoBloc>().add(GetInitialTaskBloc());
     context.read<TodoBloc>().add(GetIsCompBloc());
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Home Page")),
+        actions: [
+          Switch.adaptive(
+              value: context.watch<ThemeProvider>().getTheme(),
+              onChanged: (value){
+                context.read<ThemeProvider>().changeTheme(isDark: value);
+              })
+        ],
       ),
       body: BlocBuilder<TodoBloc, TodoStates>(
         builder: (_, state) {
